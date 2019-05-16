@@ -9,6 +9,8 @@ It is better than Redis in that Redis only allows absolute timeout for LRU entri
 It is better than pylru python package in that it is pure python and more feature rich.
 
 Usage:
+#import lru module.
+from cache import LRU
 #create an lru obejct with max 5000 entries, with each entry can last in cache for max 1 hour 
 # and it will get removed from cache if not accessed in last 5 minutes.
 # All arguements can be 0, which means that feature is disabled.
