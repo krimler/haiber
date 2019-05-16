@@ -1,0 +1,29 @@
+Pythonic LRU Cache
+
+This is an attempt to write a LRU cache with entries governing absolute timeout and idle timeout.
+So if absolute timeout is 5 minute, entry will be removed from cache no matter what access pattern it has.
+If idle timoeut is 5 minute, entry will be removed from cache if it is not been accessed for last 5 minutes.
+The absolute time and idle time can be globally set to LRU cache object or it can be set per entry.
+
+It is better than Redis in that Redis only allows absolute timeout for LRU entries.
+It is better than pylru python package in that it is pure python and more feature rich.
+
+Usage:
+#create an lru obejct with max 5000 entries, with each entry can last in cache for max 1 hour 
+# and it will get removed from cache if not accessed in last 5 minutes.
+# All arguements can be 0, which means that feature is disabled.
+#for example, setting first arguement 0, means LRU behavior is disabled.
+# setting up any timer to 0 means those timers are disabled.
+#Note: 0 is default for all timers!
+lru = LRU(5000, 3600, 300)
+#add a entry with key "foo", value "bar", for absolute timeout 2 hours and idle timeout 10 minutes.
+lru.set("foo", "bar", 7200 ,600)
+#reset a given entry to 20 seconds absolute time and 10 seconds idle timeout.
+lru.set("foo", "bar", 20 ,10)
+time.sleep(5)
+#Reset the timers and change the key too!
+lru.set("foo", "bar1", 20 ,10)
+#obtain the "value" from key.
+value = lru.get("foo")
+#read the time remaining. Note value can be None if it is been removed.
+value, abs_time, idle_time = lru.ttl("foo")
